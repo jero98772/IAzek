@@ -339,7 +339,7 @@ def main():
     global chat_id
 
     # Replace 'YOUR_TELEGRAM_BOT_TOKEN' with your actual bot token
-    updater = Updater("", use_context=True)
+    updater = Updater("7027699964:AAElgsjwqRUP7CU0NWWdbItgyLoIAkxzJT0", use_context=True)
 
     dp = updater.dispatcher
     #print("chat id",chat_id)
