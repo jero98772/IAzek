@@ -1,1 +1,2 @@
-print("testing")
+def main():
+	print("testing")

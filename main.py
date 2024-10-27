@@ -1,11 +1,11 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*-"
 """
-IAzek - 2024 - por jero98772
-IAzek - 2024 - by jero98772
+IAzek - 2024 - por MLEAFIT
+IAzek - 2024 - by MLEAFIT
 """
-from core.main.bot_telegram import main as tl
-from core.main.bot_whatsapp import main as ws
+from core.bot_telegram.main import main as tl
+from core.bot_whatsapp.main import main as ws
 from multiprocessing import Process
 
 def run_telegram_bot():
