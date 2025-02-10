@@ -99,12 +99,6 @@ def add_messages_to_current_mode(chat_id, messages):
     else:
         print(f"User '{chat_id}' does not have a current mode set.")
 
-# Function to update the user's current mode, language, level, or other settings
-def update_user(chat_id, updates):
-    updates["last_active"] = datetime.now()  # update last active time
-    result = users_collection.update_one({"chat_id": chat_id}, {"$set": updates})
-    print(f"User '{chat_id}' {'updated' if result.modified_count > 0 else 'not found or not updated'}.")
-
 # Function to retrieve all information for a specific mode
 def get_mode_info(chat_id, mode_name):
     user = users_collection.find_one({"chat_id": chat_id}, {"modes": 1})
@@ -116,7 +110,36 @@ def get_mode_info(chat_id, mode_name):
         print(f"Mode '{mode_name}' not found for user '{chat_id}'.")
         return None
 
+# Function to update all user data
+def update_user(chat_id, bot_id=None, language=None, level=None, weaknesses=None, strengths=None, modes=None, current_mode=None, sentiments=None):
+    # Prepare the fields to update
+    update_data = {
+        "bot_id": get_object_id(bot_id) if bot_id is not None else None,
+        "languages": language if language is not None else [],
+        "last_active": datetime.now(),  # update last active time
+        "level": level,
+        "weaknesses": weaknesses or [],
+        "strengths": strengths or [],
+        "modes": modes if modes is not None else {},
+        "current_mode": current_mode,
+        "sentiments": sentiments if sentiments is not None else {},
+    }
 
+    # Remove any fields with None values so we don’t update them in the database
+    update_data = {k: v for k, v in update_data.items() if v is not None}
+
+    # Perform the update
+    result = users_collection.update_one({"chat_id": chat_id}, {"$set": update_data})
+
+    if result.matched_count:
+        print(f"User with chat_id {chat_id} updated.")
+    else:
+        print(f"No user found with chat_id {chat_id}. Consider creating a user first.")
+
+# Helper function to get bot_id as object id
+def get_object_id(bot_id):
+    # Logic to convert bot_id to object id, if necessary
+    return bot_id
 """
 
 # Example usage:
